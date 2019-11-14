@@ -49,6 +49,22 @@ class Main extends Component {
     try {
       const { newRepo, repositories } = this.state;
 
+      const checkIfRepoExists = repositories.find(
+        repo => repo.name === newRepo
+      );
+
+      console.log(checkIfRepoExists);
+
+      if (checkIfRepoExists) {
+        return (
+          alert('This repo is already on your list.'),
+          this.setState({
+            loading: false,
+            error: true,
+          })
+        );
+      }
+
       const response = await api.get(`/repos/${newRepo}`);
 
       const data = {
