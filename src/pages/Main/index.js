@@ -13,6 +13,7 @@ class Main extends Component {
     newRepo: '',
     repositories: [],
     loading: false,
+    error: null,
   };
 
   // Load data from localStorage
@@ -42,31 +43,43 @@ class Main extends Component {
 
     this.setState({
       loading: true,
+      error: false,
     });
 
-    const { newRepo, repositories } = this.state;
+    try {
+      const { newRepo, repositories } = this.state;
 
-    const response = await api.get(`/repos/${newRepo}`);
+      const response = await api.get(`/repos/${newRepo}`);
 
-    const data = {
-      name: response.data.full_name,
-    };
+      const data = {
+        name: response.data.full_name,
+      };
+
+      this.setState({
+        repositories: [...repositories, data],
+        newRepo: '',
+        loading: false,
+      });
+    } catch (err) {
+      alert('Check the owner/repsitory that you typed.');
+      this.setState({
+        error: true,
+      });
+    }
 
     this.setState({
-      repositories: [...repositories, data],
-      newRepo: '',
       loading: false,
     });
   };
 
   render() {
-    const { newRepo, repositories, loading } = this.state;
+    const { newRepo, repositories, loading, error } = this.state;
 
     return (
       <Container>
         <h1>Repositories</h1>
 
-        <Form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.handleSubmit} error={error}>
           <input
             type="text"
             placeholder="Type a repository [owner/repository]"
