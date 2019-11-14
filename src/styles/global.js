@@ -24,5 +24,10 @@ export default createGlobalStyle`
 
   button {
     cursor: pointer;
+
+    &:hover {
+      transform: scale(1.05);
+      transition: .2s;
+    }
   }
 `;

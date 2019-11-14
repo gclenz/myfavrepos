@@ -5,7 +5,14 @@ import { FaSpinner } from 'react-icons/fa';
 import api from '../../services/api';
 
 import Container from '../../components/Container';
-import { Loading, Owner, IssueList, RepoInfo, IssueState } from './styles';
+import {
+  Loading,
+  Owner,
+  IssueList,
+  RepoInfo,
+  IssueState,
+  PageNavigation,
+} from './styles';
 
 class Repository extends Component {
   static propTypes = {
@@ -21,11 +28,12 @@ class Repository extends Component {
     issues: [],
     loading: true,
     issueState: 'all',
+    page: 1,
   };
 
   async componentDidMount() {
     const { match } = this.props;
-    const { issueState } = this.state;
+    const { issueState, page } = this.state;
 
     const repoName = decodeURIComponent(match.params.repository);
 
@@ -34,7 +42,8 @@ class Repository extends Component {
       api.get(`/repos/${repoName}/issues`, {
         params: {
           state: issueState,
-          per_page: 5,
+          per_page: 10,
+          page,
         },
       }),
     ]);
@@ -48,14 +57,15 @@ class Repository extends Component {
 
   loadIssues = async () => {
     const { match } = this.props;
-    const { issueState } = this.state;
+    const { issueState, page } = this.state;
     const repoName = decodeURIComponent(match.params.repository);
 
     const [issues] = await Promise.all([
       api.get(`/repos/${repoName}/issues`, {
         params: {
           state: issueState,
-          per_page: 5,
+          per_page: 10,
+          page,
         },
       }),
     ]);
@@ -70,8 +80,25 @@ class Repository extends Component {
     this.loadIssues();
   };
 
+  handleNextPage = async () => {
+    const { page } = this.state;
+    await this.setState({ page: page + 1 });
+    this.loadIssues();
+  };
+
+  handlePreviousPage = async () => {
+    const { page } = this.state;
+    await this.setState({ page: page - 1 });
+    this.loadIssues();
+  };
+
+  handleFirstPage = async () => {
+    await this.setState({ page: 1 });
+    this.loadIssues();
+  };
+
   render() {
-    const { repository, issues, loading, issueState } = this.state;
+    const { repository, issues, loading, issueState, page } = this.state;
 
     if (loading) {
       return (
@@ -124,6 +151,21 @@ class Repository extends Component {
             </li>
           ))}
         </IssueList>
+        <PageNavigation>
+          {page > 1 ? (
+            <button type="button" onClick={this.handlePreviousPage}>
+              Previous
+            </button>
+          ) : null}
+          {page > 2 ? (
+            <button type="button" onClick={this.handleFirstPage}>
+              First page
+            </button>
+          ) : null}
+          <button type="button" onClick={this.handleNextPage}>
+            Next
+          </button>
+        </PageNavigation>
       </Container>
     );
   }

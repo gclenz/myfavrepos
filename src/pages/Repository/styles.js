@@ -160,3 +160,20 @@ export const IssueState = styled.select`
     cursor: pointer;
   }
 `;
+
+export const PageNavigation = styled.section`
+  border-top: 1px solid #eee;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding-top: 1rem;
+
+  button {
+    background-color: #2980b9;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: bold;
+    padding: 1rem;
+  }
+`;
