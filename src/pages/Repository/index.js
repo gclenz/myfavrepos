@@ -114,7 +114,7 @@ class Repository extends Component {
           <Link to="/">⟵ Back to repositories</Link>
           <img src={repository.owner.avatar_url} alt={repository.owner.login} />
           <h4>{repository.owner.login}</h4>
-          <h1>{repository.name}</h1>
+          <h2>{repository.name}</h2>
           <p>{repository.description}</p>
           <RepoInfo>
             <span>Stars: {repository.stargazers_count}</span>

@@ -98,7 +98,7 @@ class Main extends Component {
 
     return (
       <Container>
-        <h1>Repositories</h1>
+        <h2>Repositories</h2>
 
         <Form onSubmit={this.handleSubmit} error={error}>
           <input

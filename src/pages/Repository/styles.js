@@ -43,7 +43,7 @@ export const Owner = styled.header`
     width: 100px;
   }
 
-  h1 {
+  h2 {
     margin: 0.5rem 0 1rem;
     text-transform: capitalize;
   }
