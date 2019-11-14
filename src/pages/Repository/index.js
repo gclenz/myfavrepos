@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { FaSpinner } from 'react-icons/fa';
 import api from '../../services/api';
 
 import Container from '../../components/Container';
-import { Loading, Owner, IssueList, RepoInfo } from './styles';
+import { Loading, Owner, IssueList, RepoInfo, IssueState } from './styles';
 
 class Repository extends Component {
   static propTypes = {
@@ -19,10 +20,12 @@ class Repository extends Component {
     repository: {},
     issues: [],
     loading: true,
+    issueState: 'all',
   };
 
   async componentDidMount() {
     const { match } = this.props;
+    const { issueState } = this.state;
 
     const repoName = decodeURIComponent(match.params.repository);
 
@@ -30,7 +33,7 @@ class Repository extends Component {
       api.get(`/repos/${repoName}`),
       api.get(`/repos/${repoName}/issues`, {
         params: {
-          state: 'open',
+          state: issueState,
           per_page: 5,
         },
       }),
@@ -43,13 +46,39 @@ class Repository extends Component {
     });
   }
 
-  render() {
-    const { repository, issues, loading } = this.state;
+  loadIssues = async () => {
+    const { match } = this.props;
+    const { issueState } = this.state;
+    const repoName = decodeURIComponent(match.params.repository);
 
-    console.log(repository);
+    const [issues] = await Promise.all([
+      api.get(`/repos/${repoName}/issues`, {
+        params: {
+          state: issueState,
+          per_page: 5,
+        },
+      }),
+    ]);
+
+    this.setState({
+      issues: issues.data,
+    });
+  };
+
+  handleSelectChange = async event => {
+    await this.setState({ issueState: event.target.value });
+    this.loadIssues();
+  };
+
+  render() {
+    const { repository, issues, loading, issueState } = this.state;
 
     if (loading) {
-      return <Loading>Loading...</Loading>;
+      return (
+        <Loading loading={loading}>
+          <FaSpinner size={36} />
+        </Loading>
+      );
     }
 
     return (
@@ -64,7 +93,14 @@ class Repository extends Component {
             <span>Stars: {repository.stargazers_count}</span>
             <span>Forks: {repository.forks_count}</span>
           </RepoInfo>
+          <h3>Issue state</h3>
         </Owner>
+
+        <IssueState value={issueState} onChange={this.handleSelectChange}>
+          <option value="all">All</option>
+          <option value="open">Open</option>
+          <option value="closed">Closed</option>
+        </IssueState>
 
         <IssueList>
           {issues.map(issue => (

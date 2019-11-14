@@ -49,20 +49,17 @@ class Main extends Component {
     try {
       const { newRepo, repositories } = this.state;
 
+      // Check if typed something
+      if (newRepo === '') {
+        throw new Error('You need to type something.');
+      }
+
       const checkIfRepoExists = repositories.find(
         repo => repo.name === newRepo
       );
 
-      console.log(checkIfRepoExists);
-
       if (checkIfRepoExists) {
-        return (
-          alert('This repo is already on your list.'),
-          this.setState({
-            loading: false,
-            error: true,
-          })
-        );
+        throw new Error('Duplicated repository.');
       }
 
       const response = await api.get(`/repos/${newRepo}`);
@@ -77,7 +74,7 @@ class Main extends Component {
         loading: false,
       });
     } catch (err) {
-      alert('Check the owner/repsitory that you typed.');
+      alert(err);
       this.setState({
         error: true,
       });

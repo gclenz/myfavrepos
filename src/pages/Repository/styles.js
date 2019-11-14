@@ -1,6 +1,19 @@
-import styled from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 
-export const Loading = styled.div`
+// Animations
+const rotate = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+export const Loading = styled.div.attrs(props => ({
+  disabled: props.loading,
+}))`
   color: #202023;
   font-size: 2rem;
   font-weight: bold;
@@ -9,6 +22,14 @@ export const Loading = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
+
+  ${props =>
+    props.loading &&
+    css`
+      svg {
+        animation: ${rotate} 2s linear infinite;
+      }
+    `}
 `;
 
 export const Owner = styled.header`
@@ -25,6 +46,10 @@ export const Owner = styled.header`
   h1 {
     margin: 0.5rem 0 1rem;
     text-transform: capitalize;
+  }
+
+  h3 {
+    margin-top: 1rem;
   }
 
   h4 {
@@ -102,9 +127,36 @@ export const RepoInfo = styled.section`
   align-items: center;
   background-color: #eee;
   border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(150, 150, 150, 0.1);
   display: flex;
   flex-direction: row;
   height: 40px;
   justify-content: space-around;
   width: 100%;
+`;
+
+export const IssueState = styled.select`
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #2980b9;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(150, 150, 150, 0.2);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  width: 100%;
+
+  option {
+    background-color: #808080;
+    border-radius: 5px;
+    font-weight: bold;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
