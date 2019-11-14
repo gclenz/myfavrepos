@@ -75,6 +75,16 @@ export const List = styled.ul`
     & + li {
       border-top: 1px solid #eee;
     }
+
+    button {
+      background-color: #c0392b;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      font-weight: bold;
+      margin-left: 1rem;
+      padding: 0.5rem 0.8rem;
+    }
   }
 
   a {

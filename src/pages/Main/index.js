@@ -118,15 +118,17 @@ class Main extends Component {
           {repositories.map(repository => (
             <li key={repository.name}>
               <span>{repository.name}</span>
-              <Link to={`/repository/${encodeURIComponent(repository.name)}`}>
-                Details
-              </Link>
-              <button
-                type="button"
-                onClick={() => this.handleDelete(repository.name)}
-              >
-                Remove
-              </button>
+              <section>
+                <Link to={`/repository/${encodeURIComponent(repository.name)}`}>
+                  Details
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => this.handleDelete(repository.name)}
+                >
+                  ×
+                </button>
+              </section>
             </li>
           ))}
         </List>

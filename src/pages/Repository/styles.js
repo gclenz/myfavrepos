@@ -17,13 +17,17 @@ export const Owner = styled.header`
   align-items: center;
 
   img {
-    border-radius: 1998px;
-    margin-top: 1rem;
+    border-radius: 50%;
+    margin: 1rem 0 0.5rem;
     width: 100px;
   }
 
   h1 {
-    margin: 1rem 0;
+    margin: 0.5rem 0 1rem;
+    text-transform: capitalize;
+  }
+
+  h4 {
     text-transform: capitalize;
   }
 
@@ -31,6 +35,7 @@ export const Owner = styled.header`
     color: #606060;
     max-width: 400px;
     text-align: center;
+    margin-bottom: 1rem;
   }
 
   a {
@@ -91,4 +96,15 @@ export const IssueList = styled.ul`
   p {
     color: #808080;
   }
+`;
+
+export const RepoInfo = styled.section`
+  align-items: center;
+  background-color: #eee;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  height: 40px;
+  justify-content: space-around;
+  width: 100%;
 `;

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import api from '../../services/api';
 
 import Container from '../../components/Container';
-import { Loading, Owner, IssueList } from './styles';
+import { Loading, Owner, IssueList, RepoInfo } from './styles';
 
 class Repository extends Component {
   static propTypes = {
@@ -46,6 +46,8 @@ class Repository extends Component {
   render() {
     const { repository, issues, loading } = this.state;
 
+    console.log(repository);
+
     if (loading) {
       return <Loading>Loading...</Loading>;
     }
@@ -53,10 +55,15 @@ class Repository extends Component {
     return (
       <Container>
         <Owner>
-          <Link to="/">‹ Back to repositories</Link>
+          <Link to="/">⟵ Back to repositories</Link>
           <img src={repository.owner.avatar_url} alt={repository.owner.login} />
+          <h4>{repository.owner.login}</h4>
           <h1>{repository.name}</h1>
           <p>{repository.description}</p>
+          <RepoInfo>
+            <span>Stars: {repository.stargazers_count}</span>
+            <span>Forks: {repository.forks_count}</span>
+          </RepoInfo>
         </Owner>
 
         <IssueList>
