@@ -88,6 +88,14 @@ class Main extends Component {
     });
   };
 
+  handleDelete(repoName) {
+    const { repositories } = this.state;
+
+    this.setState({
+      repositories: repositories.filter(repo => repo.name !== repoName),
+    });
+  }
+
   render() {
     const { newRepo, repositories, loading, error } = this.state;
 
@@ -113,6 +121,12 @@ class Main extends Component {
               <Link to={`/repository/${encodeURIComponent(repository.name)}`}>
                 Details
               </Link>
+              <button
+                type="button"
+                onClick={() => this.handleDelete(repository.name)}
+              >
+                Remove
+              </button>
             </li>
           ))}
         </List>
